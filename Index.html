@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>PokemonTypes</title>
+
+</head>
+
+
+<body>
+    
+    <h1>Types</h1>
+    <div id="app">
+        <p>{{types}}</p>
+    </div>
+
+		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/vue@3"></script>
+
+
+    <script>
+
+      const apiURL_TypesNames = "https://pokeapi.co/api/v2/type";
+
+        Vue.createApp({
+            data() {
+            return {
+                types: [""]
+            }
+            },
+
+            created: function() {
+              this.fetchDataPromise();
+            },
+            
+            methods: {
+            addItem: function() {
+                this.list.push('Orange' + (++this.counter).toString())
+            },
+
+            fetchDataPromise: function () {
+              const self = this;
+              axios
+                  .get(apiURL_TypesNames)
+                  .then(function (reponse){
+                    console.log(reponse.data);
+                    i=0;
+                    while (i < reponse.data['count']) {
+                    self.types = self.types + " "+reponse.data['results'][i]['name'];
+                    i++;
+                    }
+
+                  })
+                  .catch(function (error) {
+                    console.log(error)
+                  });
+            }
+
+            }
+        }).mount('#app')
+  </script>
+
+</body>
+
+</html>
